@@ -2,10 +2,10 @@ from StreamDock import StreamDock
 from PIL import Image
 import ctypes
 import ctypes.util
-import os
+import os, io
+
 class StreamDock293(StreamDock):
-
-
+        
     def __init__(self, transport1, devInfo):
         super().__init__(transport1, devInfo)
 
@@ -14,7 +14,7 @@ class StreamDock293(StreamDock):
         return self.transport.setBrightness(percent)
     
 
-    # 设置设备的背景图片
+    # 设置设备的背景图片 800 * 480
     def set_touchscreen_image(self, image):
 
         image = Image.open(image)
@@ -35,21 +35,24 @@ class StreamDock293(StreamDock):
         reversed_bgr_array = arr_ctypes[::-1]
         return self.transport.setBackgroundImg(reversed_bgr_array,width*height*3)
     
-    # 设置设备的按键图标
-    def set_key_image(self, image, key):
-        # 打开图片
-        image1 = Image.open(image)
-
-        # 旋转图片180度
-        rotated_image = image1.rotate(180)
-
-        # 保存旋转后的图片
-        rotated_image.save("Temporary.jpg","JPEG")
-        returnvalue = self.transport.setKeyImg(bytes("Temporary.jpg",'utf-8'), key)
-        os.remove("Temporary.jpg")
+    # 设置设备的按键图标 100 * 100
+    def set_key_image(self, key, image_buff):
+        image = Image.open(io.BytesIO(image_buff))
+        image.save(f"_temp_{key}.jpg","JPEG", subsampling=0, quality=100)
+        returnvalue = self.transport.setKeyImg(bytes(f"_temp_{key}.jpg",'utf-8'), key)
+        # os.remove("Temporary.jpg")
         return returnvalue
     
 
     # 获取设备的固件版本号
     def get_serial_number(self,lenth):
         return self.transport.getInputReport(lenth)
+
+
+    def key_image_format(self):
+        return {
+            'size': (100, 100),
+            'format': "JPEG",
+            'rotation': 180,
+            'flip': (False, False)
+        }
