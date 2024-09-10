@@ -2,7 +2,7 @@ import os
 import sys
 
 # Define and update LD_LIBRARY_PATH
-module_path = os.path.abspath('./streamdock_sdk')
+module_path = os.path.abspath('./streamdock')
 
 os.environ['LD_LIBRARY_PATH'] = f"{module_path}"
 
