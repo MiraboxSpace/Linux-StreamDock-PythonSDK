@@ -34,7 +34,6 @@ def _scale_image(image, image_format, margins=[0, 0, 0, 0], background='black'):
 
 
 def _to_native_format(image, image_format):
-    print(image_format)
     if image.size != image_format['size']:
         image.thumbnail(image_format['size'])
 
