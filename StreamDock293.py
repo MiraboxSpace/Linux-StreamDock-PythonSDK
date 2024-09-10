@@ -37,10 +37,11 @@ class StreamDock293(StreamDock):
     
     # 设置设备的按键图标 100 * 100
     def set_key_image(self, key, image_buff):
-        image = Image.open(io.BytesIO(image_buff))
-        image.save(f"_temp_{key}.jpg","JPEG", subsampling=0, quality=100)
-        returnvalue = self.transport.setKeyImg(bytes(f"_temp_{key}.jpg",'utf-8'), key)
-        # os.remove("Temporary.jpg")
+        _temp_file = f"_temp_{key}.jpg"
+        with open(_temp_file, "wb") as img_file:
+            img_file.write(image_buff)
+        returnvalue = self.transport.setKeyImg(bytes(_temp_file,'utf-8'), key)
+        os.remove(_temp_file)
         return returnvalue
     
 
