@@ -70,7 +70,7 @@ class DeviceManager:
                                 self.streamdocks.pop(index)
                                 streamdock.close()
                                 del streamdock
-                                 
+                                break
                         index=index+1
                         flag2=1
                     elif flag2==1:
