@@ -5,6 +5,8 @@ import pyudev
 
 class DeviceManager:
 
+
+
     streamdocks = list()
     @staticmethod
     def _get_transport(transport):
@@ -60,7 +62,8 @@ class DeviceManager:
                                 for current_device in found_devices:
                                     if device.device_path.find(current_device['path'])!=-1:
                                         self.streamdocks.append(class_type(self.transport,current_device))
-
+                                    
+                                
                 elif  device.action == 'remove':
                     if flag2==0:
                         index=0
@@ -71,7 +74,7 @@ class DeviceManager:
                                 streamdock.close()
                                 del streamdock
                                 break
-                        index=index+1
+                            index=index+1
                         flag2=1
                     elif flag2==1:
                         flag2=0
