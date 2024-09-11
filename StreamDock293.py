@@ -4,8 +4,7 @@ import ctypes
 import ctypes.util
 import os, io
 
-class StreamDock293(StreamDock):
-        
+class StreamDock293(StreamDock):        
     def __init__(self, transport1, devInfo):
         super().__init__(transport1, devInfo)
 
@@ -37,14 +36,17 @@ class StreamDock293(StreamDock):
     
     # 设置设备的按键图标 100 * 100
     def set_key_image(self, key, image_buff):
-        _temp_file = f"_temp_{key}.jpg"
+        _temp_file = f"_temp/{key}.jpg"
         with open(_temp_file, "wb") as img_file:
             img_file.write(image_buff)
         returnvalue = self.transport.setKeyImg(bytes(_temp_file,'utf-8'), key)
         os.remove(_temp_file)
         return returnvalue
-    
 
+    #向图片传入二进制数据，width：图片的宽默认100，height：图片的高默认100
+    def set_key_imagedata(self, key, image_buff, width=100, height=100):
+        return self.transport.setKeyImgdata(image_buff, key, width, height)
+    
     # 获取设备的固件版本号
     def get_serial_number(self,lenth):
         return self.transport.getInputReport(lenth)
