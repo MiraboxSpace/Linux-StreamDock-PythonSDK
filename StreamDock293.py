@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
+
 from StreamDock import StreamDock
 from PIL import Image
 import ctypes
 import ctypes.util
-import os, io
-
+import os,io
+from io import BytesIO
 class StreamDock293(StreamDock):
         
     def __init__(self, transport1, devInfo):
@@ -35,14 +37,39 @@ class StreamDock293(StreamDock):
         reversed_bgr_array = arr_ctypes[::-1]
         return self.transport.setBackgroundImg(reversed_bgr_array,width*height*3)
     
-    # 设置设备的按键图标 100 * 100
+       # 设置设备的按键图标 100 * 100
     def set_key_image(self, key, image_buff):
-        image = Image.open(io.BytesIO(image_buff))
-        image.save(f"_temp_{key}.jpg","JPEG", subsampling=0, quality=100)
-        returnvalue = self.transport.setKeyImg(bytes(f"_temp_{key}.jpg",'utf-8'), key)
-        # os.remove("Temporary.jpg")
+       # 打开图片
+        image1 = Image.open(image_buff)
+
+        # 旋转图片180度
+        rotated_image = image1.rotate(180)
+
+        # 保存旋转后的图片
+        rotated_image.save("Temporary.jpg","JPEG",subsampling=0,quality=100)
+        returnvalue = self.transport.setKeyImg(bytes("Temporary.jpg",'utf-8'), key)
+        os.remove("Temporary.jpg")
         return returnvalue
-    
+        #向图片传入二进制数据，width：图片的宽默认100，height：图片的高默认100
+    def set_key_imagedata(self, imagedata, key,width=100,height=100):
+        print()
+        if len(imagedata) != width*height*3:
+            print("width与height与实际大小不符合")
+            return -1
+        image = Image.new('RGB', (width, height))
+        for y in range(height):
+            for x in range(width):
+                r=ord(imagedata[width*height*3-y*width*3-x*3-2-1])
+                g=ord(imagedata[width*height*3-y*width*3-x*3-1-1])
+                b=ord(imagedata[width*height*3-y*width*3-x*3-1])
+                image.putpixel((x, y), (r, g, b))
+        buffer = BytesIO()
+        image.save(buffer, format='JPEG')
+        jpg_data = buffer.getvalue()
+        returnvalue =self.transport.setKeyImgdata(jpg_data,key,width,height)
+        return returnvalue
+
+         
 
     # 获取设备的固件版本号
     def get_serial_number(self,lenth):

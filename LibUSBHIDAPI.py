@@ -60,6 +60,9 @@ class LibUSBHIDAPI:
     
     my_transpoet_lib.TranSpoet_setKeyImg.restype=ctypes.c_int
     my_transpoet_lib.TranSpoet_setKeyImg.argtypes=[ctypes.c_void_p,ctypes.c_char_p,ctypes.c_int]
+
+    my_transpoet_lib.TranSpoet_setKeyImgdata.restype=ctypes.c_int
+    my_transpoet_lib.TranSpoet_setKeyImgdata.argtypes=[ctypes.c_void_p,ctypes.POINTER(ctypes.c_char),ctypes.c_int,ctypes.c_int,ctypes.c_int]
     
     my_transpoet_lib.TranSpoet_keyClear.restype=ctypes.c_int
     my_transpoet_lib.TranSpoet_keyClear.argtypes=[ctypes.c_void_p,ctypes.c_int]
@@ -127,6 +130,8 @@ class LibUSBHIDAPI:
     
     def setKeyImg(self,path,key):
         return my_transpoet_lib.TranSpoet_setKeyImg(self.transport,path,key)
+    def setKeyImgdata(self,imagedata,key,width,height):
+        return my_transpoet_lib.TranSpoet_setKeyImgdata(self.transport,imagedata,key,width,height)
     
     def keyClear(self,index):
         return my_transpoet_lib.TranSpoet_keyClear(self.transport,index)
