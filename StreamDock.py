@@ -1,4 +1,3 @@
-
 from abc import ABCMeta, abstractmethod
 import ctypes
 import ctypes.util
@@ -67,6 +66,10 @@ class StreamDock():
 
     @abstractmethod
     def set_key_image(self, key, image):
+        pass
+
+    @abstractmethod
+    def set_key_imagedata(self, key, image,width=126,height=126):
         pass
 
 
