@@ -7,8 +7,7 @@ import ctypes.util
 import os,io
 from io import BytesIO
 class StreamDock293(StreamDock):
-
-
+        
     def __init__(self, transport1, devInfo):
         super().__init__(transport1, devInfo)
 
@@ -17,7 +16,7 @@ class StreamDock293(StreamDock):
         return self.transport.setBrightness(percent)
     
 
-    # 设置设备的背景图片
+    # 设置设备的背景图片 800 * 480
     def set_touchscreen_image(self, image):
 
         image = Image.open(image)
@@ -75,3 +74,12 @@ class StreamDock293(StreamDock):
     # 获取设备的固件版本号
     def get_serial_number(self,lenth):
         return self.transport.getInputReport(lenth)
+
+
+    def key_image_format(self):
+        return {
+            'size': (100, 100),
+            'format': "JPEG",
+            'rotation': 180,
+            'flip': (False, False)
+        }
