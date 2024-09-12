@@ -1,8 +1,7 @@
 import ctypes
 import ctypes.util
-import os
 
-my_transpoet_lib = ctypes.CDLL(os.environ['LD_LIBRARY_PATH']+'/libtransport.so')
+my_transpoet_lib = ctypes.CDLL('libtransport.so')
 class LibUSBHIDAPI:
 
     class hid_device_info(ctypes.Structure):
@@ -81,6 +80,12 @@ class LibUSBHIDAPI:
 
     my_transpoet_lib.TranSpoet_close.restype=ctypes.c_int
     my_transpoet_lib.TranSpoet_close.argtypes=[ctypes.c_void_p]
+
+    my_transpoet_lib.TranSpoet_screenOff.restype=ctypes.c_int
+    my_transpoet_lib.TranSpoet_screenOff.argtypes=[ctypes.c_void_p]
+
+    my_transpoet_lib.TranSpoet_screenOn.restype=ctypes.c_int
+    my_transpoet_lib.TranSpoet_screenOn.argtypes=[ctypes.c_void_p]
     def __init__(self):
         self.transport=my_transpoet_lib.TranSport_new()
 
@@ -151,3 +156,7 @@ class LibUSBHIDAPI:
     def close(self):
         return my_transpoet_lib.TranSpoet_close(self.transport)
     
+    def screen_Off(self):
+        return my_transpoet_lib.TranSpoet_screenOff(self.transport)
+    def screen_On(self):
+        return my_transpoet_lib.TranSpoet_screenOn(self.transport)
