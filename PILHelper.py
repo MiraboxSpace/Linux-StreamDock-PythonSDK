@@ -46,11 +46,10 @@ def _to_native_format(image, image_format):
     if image_format['flip'][1]:
         image = image.transpose(Image.FLIP_TOP_BOTTOM)
 
-
     # We want a compressed image in a given codec, convert.
     compressed_image = io.BytesIO()
     image.save(compressed_image, image_format['format'], quality=100)
-    return compressed_image.getbuffer()
+    return compressed_image.getvalue()
 
 
 def create_image(deck, background='black'):

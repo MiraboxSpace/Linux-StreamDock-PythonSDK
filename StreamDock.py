@@ -1,5 +1,7 @@
 import threading
 from abc import ABC, ABCMeta, abstractmethod
+import threading
+from abc import ABC, ABCMeta, abstractmethod
 import ctypes
 import ctypes.util
 import threading
@@ -147,6 +149,54 @@ class StreamDock(ABC):
             self.read_thread.daemon = True
             self.read_thread.start()
             
+        self._setup_reader(self._read)
+        
+    def _read(self):
+        while self.run_read_thread:
+            try:
+                arr=self.read()
+                if len(arr)>=10:
+                    if arr[9]==0xFF:
+                        print("写入成功")
+                    else:
+                        k = KEY_MAPPING[arr[9]]
+                        new = arr[10]
+                        if new == 0x02:
+                            new = 0
+                        if new == 0x01:
+                            new = 1
+                        if self.key_callback is not None:
+                            self.key_callback(self, k, new)
+                else:
+                    print("read control", arr)
+                del arr
+            except Exception:
+                self.run_read_thread = False
+                self.close()
+        pass
+            
+    def _setup_reader(self, callback):
+        """
+        Sets up the internal transport reader thread with the given callback,
+        for asynchronous processing of HID events from the device. If the thread
+        already exists, it is terminated and restarted with the new callback
+        function.
+
+        :param function callback: Callback to run on the reader thread.
+        """
+        if self.read_thread is not None:
+            self.run_read_thread = False
+            try:
+                self.read_thread.join()
+            except RuntimeError:
+                pass
+
+        if callback is not None:
+            self.run_read_thread = True
+            self.read_thread = threading.Thread(target=callback)
+            self.read_thread.daemon = True
+            self.read_thread.start()
+            
     # 关闭设备
     def close(self):
         self.disconnected()
@@ -221,6 +271,7 @@ class StreamDock(ABC):
 
     @abstractmethod
     def set_key_imagedata(self, key, image, width=126, height=126):
+    def set_key_imagedata(self, key, image, width=126, height=126):
         pass
     
     @abstractmethod
@@ -230,6 +281,108 @@ class StreamDock(ABC):
     @abstractmethod
     def set_touchscreen_image(self, image):
         pass
+
+
+
+    def id(self):
+        """
+        Retrieves the physical ID of the attached StreamDeck. This can be used
+        to differentiate one StreamDeck from another.
+
+        :rtype: str
+        :return: Identifier for the attached device.
+        """
+        return self.getPath()
+
+
+
+    def set_key_callback(self, callback):
+        """
+        Sets the callback function called each time a button on the StreamDeck
+        changes state (either pressed, or released).
+
+        .. note:: This callback will be fired from an internal reader thread.
+                  Ensure that the given callback function is thread-safe.
+
+        .. note:: Only one callback can be registered at one time.
+
+        .. seealso:: See :func:`~StreamDeck.set_key_callback_async` method for
+                     a version compatible with Python 3 `asyncio` asynchronous
+                     functions.
+
+        :param function callback: Callback function to fire each time a button
+                                state changes.
+        """
+        self.key_callback = callback
+        
+    def set_key_callback_async(self, async_callback, loop=None):
+        """
+        Sets the asynchronous callback function called each time a button on the
+        StreamDeck changes state (either pressed, or released). The given
+        callback should be compatible with Python 3's `asyncio` routines.
+
+        .. note:: The asynchronous callback will be fired in a thread-safe
+                  manner.
+
+        .. note:: This will override the callback (if any) set by
+                  :func:`~StreamDeck.set_key_callback`.
+
+        :param function async_callback: Asynchronous callback function to fire
+                                        each time a button state changes.
+        :param asyncio.loop loop: Asyncio loop to dispatch the callback into
+        """
+        import asyncio
+
+        loop = loop or asyncio.get_event_loop()
+
+        def callback(*args):
+            asyncio.run_coroutine_threadsafe(async_callback(*args), loop)
+
+        self.set_key_callback(callback)
+
+    def set_touchscreen_callback(self, callback):
+        """
+        Sets the callback function called each time there is an interaction
+        with a touchscreen on the StreamDeck.
+
+        .. note:: This callback will be fired from an internal reader thread.
+                  Ensure that the given callback function is thread-safe.
+
+        .. note:: Only one callback can be registered at one time.
+
+        .. seealso:: See :func:`~StreamDeck.set_touchscreen_callback_async`
+                     method for a version compatible with Python 3 `asyncio`
+                     asynchronous functions.
+
+        :param function callback: Callback function to fire each time a button
+                                state changes.
+        """
+        self.touchscreen_callback = callback
+
+    def set_touchscreen_callback_async(self, async_callback, loop=None):
+        """
+        Sets the asynchronous callback function called each time there is an
+        interaction with the touchscreen on the StreamDeck. The given callback
+        should be compatible with Python 3's `asyncio` routines.
+
+        .. note:: The asynchronous callback will be fired in a thread-safe
+                  manner.
+
+        .. note:: This will override the callback (if any) set by
+                  :func:`~StreamDeck.set_touchscreen_callback`.
+
+        :param function async_callback: Asynchronous callback function to fire
+                                        each time a button state changes.
+        :param asyncio.loop loop: Asyncio loop to dispatch the callback into
+        """
+        import asyncio
+
+        loop = loop or asyncio.get_event_loop()
+
+        def callback(*args):
+            asyncio.run_coroutine_threadsafe(async_callback(*args), loop)
+
+        self.set_touchscreen_callback(callback)
 
 
 
