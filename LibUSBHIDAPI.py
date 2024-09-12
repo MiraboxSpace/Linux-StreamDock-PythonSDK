@@ -130,6 +130,7 @@ class LibUSBHIDAPI:
     
     def setKeyImg(self,path,key):
         return my_transpoet_lib.TranSpoet_setKeyImg(self.transport,path,key)
+        
     def setKeyImgdata(self,imagedata,key,width,height):
         return my_transpoet_lib.TranSpoet_setKeyImgdata(self.transport,imagedata,key,width,height)
     
