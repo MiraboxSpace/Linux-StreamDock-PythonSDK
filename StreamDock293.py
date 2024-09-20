@@ -48,9 +48,8 @@ class StreamDock293(StreamDock):
         return self.transport.setKeyImgdata(image_buff, key, width, height)
     
     # 获取设备的固件版本号
-    def get_serial_number(self,lenth):
-        return self.transport.getInputReport(lenth)
-
+    def get_serial_number(self,length):
+        return self.transport.getInputReport(length)
 
     def key_image_format(self):
         return {

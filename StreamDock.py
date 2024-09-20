@@ -53,6 +53,7 @@ class StreamDock(ABC):
     transport=None
     screenlicent=None
     __metaclass__ = ABCMeta    
+    __seconds = 300
     def __init__(self,transport1,devInfo):
         self.transport=transport1
         self.vendor_id=devInfo['vendor_id']
@@ -270,7 +271,6 @@ class StreamDock(ABC):
         pass
 
     @abstractmethod
-    def set_key_imagedata(self, key, image, width=126, height=126):
     def set_key_imagedata(self, key, image, width=126, height=126):
         pass
     
