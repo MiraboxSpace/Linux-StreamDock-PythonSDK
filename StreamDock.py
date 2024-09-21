@@ -271,6 +271,7 @@ class StreamDock(ABC):
 
     @abstractmethod
     def set_key_imagedata(self, key, image, width=126, height=126):
+        pass
     def set_key_imagedata(self, key, image, width=126, height=126):
         pass
     
