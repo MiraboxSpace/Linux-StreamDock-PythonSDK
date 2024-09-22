@@ -40,7 +40,7 @@ After obtaining the list of device objects, you need to call the `open()` method
     device.set_brightness(100)
     device.set_touchscreen_image("1.jpg")
     time.sleep(1)
-    device.set_key_image("2.jpg",3)
+    device.set_key_image(3, "2.jpg")
     time.sleep(1)
     device.cleaerIcon(3)
     time.sleep(1)

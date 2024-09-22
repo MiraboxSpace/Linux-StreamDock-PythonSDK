@@ -22,7 +22,7 @@ if __name__ == "__main__":
         device.set_touchscreen_image("1.jpg")
         time.sleep(1)
         # # 设置设备某个按键的图标
-        device.set_key_image(3, PILHelper.to_native_key_format(device, "2.jpg"))
+        device.set_key_image(3,  "2.jpg")
         time.sleep(1)
         # 清空某个按键的图标
         device.cleaerIcon(3)
