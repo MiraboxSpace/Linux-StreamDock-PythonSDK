@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 
 [project]
 name = "streamdock"
-version = "0.1"
+version = "0.1.1"
 description = "A Python package to control streamdock device: https://bbs.key123.vip"
 authors = [
     {name = "Hugo Zhu", email = "hugozhu@gmail.com"}

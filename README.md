@@ -1,9 +1,9 @@
 # Linux Systems (Ubuntu/Debian)
 
-You need to install `PIL`, `pyudev`, `threading`, `ctypes`, `time`, `abc`
+You need to install `pillow`, `pyudev`, `threading`, `ctypes`, `time`, `abc`
 
 ```bash
-pip install PIL
+pip install pillow
 ```
 ```bash
 pip install pyudev
