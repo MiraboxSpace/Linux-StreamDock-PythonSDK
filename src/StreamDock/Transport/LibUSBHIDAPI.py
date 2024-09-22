@@ -1,7 +1,18 @@
+import os
 import ctypes
 import ctypes.util
+import platform
 
-my_transpoet_lib = ctypes.CDLL('libtransport.so')
+arch = platform.architecture()[0]
+# If on ARM architecture
+if 'arm' in platform.system().lower():
+    dll_name = 'libtransport_arm64.so'  # Adjust the library name for ARM
+else:
+    dll_name = 'libtransport.so'
+    
+dllabspath = os.path.dirname(os.path.abspath(__file__)) + os.path.sep + dll_name
+my_transpoet_lib = ctypes.CDLL(dllabspath)
+
 class LibUSBHIDAPI:
 
     class hid_device_info(ctypes.Structure):

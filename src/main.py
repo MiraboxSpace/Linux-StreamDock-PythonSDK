@@ -1,4 +1,4 @@
-from DeviceManager import DeviceManager
+from StreamDock.DeviceManager import DeviceManager
 import threading
 import time
 

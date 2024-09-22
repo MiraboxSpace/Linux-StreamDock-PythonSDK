@@ -1,4 +1,4 @@
-from StreamDock import StreamDock
+from .StreamDock import StreamDock
 from PIL import Image
 import ctypes
 import ctypes.util
