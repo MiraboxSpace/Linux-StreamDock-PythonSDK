@@ -6,6 +6,7 @@ import pyudev
 class DeviceManager:
 
 
+
     streamdocks = list()
     @staticmethod
     def _get_transport(transport):
@@ -20,7 +21,8 @@ class DeviceManager:
 
 
         products = [
-            (USBVendorIDs.USB_VID, USBProductIDs.USB_PID_STREAMDOCK_293, StreamDock293),
+            (USBVendorIDs.USB_VID_293, USBProductIDs.USB_PID_STREAMDOCK_293, StreamDock293),
+            (USBVendorIDs.USB_VID_293s, USBProductIDs.USB_PID_STREAMDOCK_293s, StreamDock293s),
         ]
 
 
@@ -35,7 +37,8 @@ class DeviceManager:
     def listen(self):
 
         products = [
-            (USBVendorIDs.USB_VID, USBProductIDs.USB_PID_STREAMDOCK_293, StreamDock293),
+            (USBVendorIDs.USB_VID_293, USBProductIDs.USB_PID_STREAMDOCK_293, StreamDock293),
+            (USBVendorIDs.USB_VID_293s, USBProductIDs.USB_PID_STREAMDOCK_293s, StreamDock293s),
         ]
 
         context = pyudev.Context()
@@ -61,17 +64,17 @@ class DeviceManager:
                                 for current_device in found_devices:
                                     if device.device_path.find(current_device['path'])!=-1:
                                         self.streamdocks.append(class_type(self.transport,current_device))
+                                        print("创建成功")
                                     
                                 
                 elif  device.action == 'remove':
                     if flag2==0:
                         index=0
-                        
                         for streamdock in self.streamdocks:
                             if device.device_path.find(streamdock.getPath())!=-1:
                                 self.streamdocks.pop(index)
-                                streamdock.close()
                                 del streamdock
+                                print("删除成功")
                                 break
                             index=index+1
                         flag2=1
