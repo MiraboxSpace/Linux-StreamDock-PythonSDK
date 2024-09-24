@@ -1,19 +1,16 @@
 class USBVendorIDs:
-
-
-    USB_VID = 0x5500
+    """
+    USB Vendor IDs for known StreamDeck devices.
+    """
+    
+    USB_VID_293 = 0x5500
+    USB_VID_293s = 0x5548
 
 
 class USBProductIDs:
- 
+    """
+    USB Product IDs for known StreamDeck devices.
+    """
 
-    USB_PID_STREAMDOCK_ORIGINAL = 0x0060
-    USB_PID_STREAMDOCK_ORIGINAL_V2 = 0x006d
-    USB_PID_STREAMDOCK_MINI = 0x0063
-    USB_PID_STREAMDOCK_XL = 0x006c
-    USB_PID_STREAMDOCK_XL_V2 = 0x008f
-    USB_PID_STREAMDOCK_MK2 = 0x0080
-    USB_PID_STREAMDOCK_PEDAL = 0x0086
-    USB_PID_STREAMDOCK_MINI_MK2 = 0x0090
-    USB_PID_STREAMDOCK_PLUS = 0x0084
     USB_PID_STREAMDOCK_293 = 0x1001
+    USB_PID_STREAMDOCK_293s = 0x6670
