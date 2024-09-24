@@ -1,4 +1,5 @@
-from DeviceManager import DeviceManager
+from StreamDock.DeviceManager import DeviceManager
+from StreamDock.ImageHelpers import PILHelper
 import threading
 import time
 
@@ -12,8 +13,6 @@ if __name__ == "__main__":
     for device in streamdocks:
         # 打开设备
         device.open()
-        # # 刷新显示屏
-        device.refresh()
         # 开线程获取设备反馈
         t1= threading.Thread(target=device.whileread)
         t1.start()
@@ -23,7 +22,7 @@ if __name__ == "__main__":
         device.set_touchscreen_image("1.jpg")
         time.sleep(1)
         # # 设置设备某个按键的图标
-        device.set_key_image("2.jpg",3)
+        device.set_key_image(3,  "2.jpg")
         time.sleep(1)
         # 清空某个按键的图标
         device.cleaerIcon(3)

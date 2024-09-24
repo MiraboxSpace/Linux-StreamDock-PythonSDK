@@ -1,4 +1,4 @@
-from StreamDock import StreamDock
+from .StreamDock import StreamDock
 from PIL import Image
 import ctypes
 import ctypes.util
@@ -36,12 +36,10 @@ class StreamDock293(StreamDock):
     
     # 设置设备的按键图标 100 * 100
     def set_key_image(self, key, image_buff):
-        _temp_file = f"_temp_{key}.jpg"
-        with open(_temp_file, "wb") as img_file:
-            img_file.write(image_buff)
-        returnvalue = self.transport.setKeyImg(bytes(_temp_file,'utf-8'), key)
-        os.remove(_temp_file)
-        return returnvalue
+        if isinstance(image_buff, str):
+            self.transport.setKeyImg(bytes(image_buff,'utf-8'), key)
+            return
+        return self.set_key_imagedata(key, image_buff)
 
     #向图片传入二进制数据，width：图片的宽默认100，height：图片的高默认100
     def set_key_imagedata(self, key, image_buff, width=100, height=100):

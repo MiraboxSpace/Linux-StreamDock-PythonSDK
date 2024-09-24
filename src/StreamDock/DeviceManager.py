@@ -1,10 +1,9 @@
-from StreamDock293 import StreamDock293
-from ProductIDs import USBVendorIDs, USBProductIDs
-from LibUSBHIDAPI import LibUSBHIDAPI
+from .Devices.StreamDock293 import StreamDock293
+from .ProductIDs import USBVendorIDs, USBProductIDs
+from .Transport.LibUSBHIDAPI import LibUSBHIDAPI
 import pyudev
 
 class DeviceManager:
-
 
 
     streamdocks = list()
