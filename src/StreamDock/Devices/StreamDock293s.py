@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from StreamDock import StreamDock
+from .StreamDock import StreamDock
 from PIL import Image
 import ctypes
 import ctypes.util
-import os,io
-from io import BytesIO
+import os, io
 class StreamDock293s(StreamDock):
 
 
