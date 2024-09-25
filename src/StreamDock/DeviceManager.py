@@ -1,4 +1,5 @@
 from .Devices.StreamDock293 import StreamDock293
+from .Devices.StreamDock293s import StreamDock293s
 from .ProductIDs import USBVendorIDs, USBProductIDs
 from .Transport.LibUSBHIDAPI import LibUSBHIDAPI
 import pyudev
