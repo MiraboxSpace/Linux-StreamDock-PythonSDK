@@ -132,7 +132,7 @@ class K1Pro(StreamDock):
             temp_image_path = (
                 "rotated_key_image_" + str(random.randint(9999, 999999)) + ".jpg"
             )
-            image.save(temp_image_path)
+            image.save(temp_image_path, quality=95)
 
             # encode send
             path_bytes = temp_image_path.encode("utf-8")

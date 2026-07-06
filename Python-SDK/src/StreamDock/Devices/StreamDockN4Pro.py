@@ -245,7 +245,7 @@ class StreamDockN4Pro(StreamDock):
                 + str(random.randint(9999, 999999))
                 + ".jpg"
             )
-            image.save(temp_image_path, quality=80)
+            image.save(temp_image_path, quality=95)
 
             # encode send
             path_bytes = temp_image_path.encode("utf-8")
