@@ -124,7 +124,7 @@ class StreamDock293s(StreamDock):
             elif hardware_key in range(16, 19):
                 # second screen
                 rotated_image = to_native_seondscreen_format(self, image)
-            rotated_image.save("Temporary.jpg", "JPEG", subsampling=0, quality=100)
+            rotated_image.save("Temporary.jpg", "JPEG", subsampling=0, quality=95)
             returnvalue = self.transport.setKeyImg(bytes("Temporary.jpg",'utf-8'), hardware_key)
             os.remove("Temporary.jpg")
             return returnvalue

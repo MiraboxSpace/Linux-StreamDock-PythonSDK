@@ -162,7 +162,7 @@ def setup_device(device):
         elif 1 == i % 3:
             device.set_key_image(i, "img/button_test.jpg")
         elif 2 == i % 3:
-            device.set_key_image(i, "img/mark.png")
+            device.set_key_image(i, "img/test.png")
 
     device.start_gif_loop()
     device.start_animation_loop()

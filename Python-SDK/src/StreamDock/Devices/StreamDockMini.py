@@ -98,7 +98,7 @@ class StreamDockMini(StreamDock):
                 + str(random.randint(9999, 999999))
                 + ".jpg"
             )
-            image.save(temp_image_path, quality=80)
+            image.save(temp_image_path, quality=95)
 
             # encode send
             path_bytes = temp_image_path.encode("utf-8")
@@ -175,7 +175,7 @@ class StreamDockMini(StreamDock):
             temp_image_path = (
                 "rotated_key_image_" + str(random.randint(9999, 999999)) + ".jpg"
             )
-            image.save(temp_image_path, "JPEG", quality=80)
+            image.save(temp_image_path, "JPEG", quality=95)
 
             # encode send
             path_bytes = temp_image_path.encode("utf-8")

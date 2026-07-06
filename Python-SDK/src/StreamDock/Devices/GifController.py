@@ -302,7 +302,7 @@ class GifController:
         if native_format["format"] == "PNG":
             native_image.save(buffer, "PNG")
         else:
-            native_image.save(buffer, "JPEG", quality=80)
+            native_image.save(buffer, "JPEG", quality=95)
         return buffer.getvalue()
 
     def _normalize_delays(self, delays, frame_count):

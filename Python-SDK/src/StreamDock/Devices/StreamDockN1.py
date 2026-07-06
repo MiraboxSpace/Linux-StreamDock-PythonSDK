@@ -219,7 +219,7 @@ class StreamDockN1(StreamDock):
             else:
                 print(f"Error: Invalid hardware key '{hardware_key}'.")
                 return -1
-            rotated_image.save("Temporary.jpg", "JPEG", subsampling=0, quality=90)
+            rotated_image.save("Temporary.jpg", "JPEG", subsampling=0, quality=95)
             returnvalue = self.transport.setKeyImgDualDevice(
                 bytes("Temporary.jpg", "utf-8"), hardware_key
             )
