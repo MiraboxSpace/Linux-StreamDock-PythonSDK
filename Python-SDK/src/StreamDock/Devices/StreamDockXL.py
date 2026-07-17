@@ -1,7 +1,7 @@
 from StreamDock.FeatrueOption import device_type
 from .StreamDock import StreamDock
 from ..DeviceConfig import StreamDockXLConfig
-from ..InputTypes import InputEvent, ButtonKey, EventType, KnobId, Direction
+from ..InputTypes import InputEvent, ButtonKey, EventType, DIPSwitchId, Direction
 from PIL import Image
 import ctypes
 import ctypes.util
@@ -11,9 +11,10 @@ import random
 
 
 class StreamDockXL(StreamDock):
-    """StreamDockXL device class - supports 36 inputs (32 keys + 2 knobs)"""
+    """StreamDockXL device class - supports 32 keys and 2 DIP switches."""
 
-    KEY_COUNT = 36
+    KEY_COUNT = 32
+    DIP_SWITCH_COUNT = 2
     KEY_MAP = False
 
     # Image key mapping: logical key -> hardware key (for setting images)
@@ -77,27 +78,31 @@ class StreamDockXL(StreamDock):
         """
         Decode hardware event codes into a unified InputEvent
 
-        XL supports regular button and knob events:
+        XL supports regular button and DIP switch events:
         - Regular buttons 1-32: hardware codes 0x19-0x08
-        - Left knob up/down 33-34: hardware codes 0x21 (up), 0x23 (down)
-        - Right knob up/down 35-36: hardware codes 0x24 (up), 0x26 (down)
+        - DIP 1: 0x21 (left), 0x23 (right), 0x22 (center)
+        - DIP 2: 0x24 (left), 0x26 (right), 0x25 (center)
+        State 0x01 means active/press; any other state means end/release.
         """
+        normalized_state = 1 if state == 0x01 else 0
 
-        knob_rotate_map = {
-            0x23: (KnobId.KNOB_1, Direction.LEFT),
-            0x21: (KnobId.KNOB_1, Direction.RIGHT),
-            0x24: (KnobId.KNOB_2, Direction.LEFT),
-            0x26: (KnobId.KNOB_2, Direction.RIGHT),
+        dip_switch_map = {
+            0x21: (DIPSwitchId.DIP_1, Direction.LEFT),
+            0x23: (DIPSwitchId.DIP_1, Direction.RIGHT),
+            0x22: (DIPSwitchId.DIP_1, None),
+            0x24: (DIPSwitchId.DIP_2, Direction.LEFT),
+            0x26: (DIPSwitchId.DIP_2, Direction.RIGHT),
+            0x25: (DIPSwitchId.DIP_2, None),
         }
 
-        # Knob rotation event
-        if hardware_code in knob_rotate_map:
-            knob_id, direction = knob_rotate_map[hardware_code]
+        if hardware_code in dip_switch_map:
+            dip_id, direction = dip_switch_map[hardware_code]
             return InputEvent(
-                event_type=EventType.KNOB_ROTATE, knob_id=knob_id, direction=direction
+                event_type=EventType.DIP_SWITCH,
+                dip_id=dip_id,
+                direction=direction,
+                state=normalized_state,
             )
-        # Handle state value: 0x02=release, 0x01=press
-        normalized_state = 1 if state == 0x01 else 0
 
         # Regular button events (1-32)
         if hardware_code in self._HW_TO_LOGICAL_KEY:
@@ -188,7 +193,7 @@ class StreamDockXL(StreamDock):
             # Get hardware key value
             hardware_key = self.get_image_key(logical_key)
 
-            # XL supports setting icons only for keys 1-32 (knob events do not require icons)
+            # XL supports setting icons only for keys 1-32.
             if hardware_key not in range(1, 33):
                 return -1
 
@@ -240,6 +245,8 @@ class StreamDockXL(StreamDock):
         self.transport.set_report_size(513, 1025, 0)
         self.feature_option.hasRGBLed = True
         self.feature_option.ledCounts = 6
+        self.feature_option.hasDIPSwitch = True
+        self.feature_option.dipSwitchCounts = self.DIP_SWITCH_COUNT
         self.feature_option.deviceType = device_type.dock_xl
         self.feature_option.supportBackgroundGif = True
         self.feature_option.supportConfig = True
