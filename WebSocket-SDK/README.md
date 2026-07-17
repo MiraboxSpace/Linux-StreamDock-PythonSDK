@@ -405,7 +405,7 @@ Triggered when listening for key, knob, or touch input.
 | x         | number | Touch X coordinate             |
 | y         | number | Touch Y coordinate             |
 
-**Mini DIP switch event payload:**
+**XL / Mini DIP switch event payload:**
 
 | Parameter | Type   | Description                                      |
 | --------- | ------ | ------------------------------------------------ |

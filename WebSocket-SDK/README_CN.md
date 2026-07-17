@@ -405,7 +405,7 @@ ws.send(JSON.stringify(refresh));
 | x      | number | 触摸 X 坐标             |
 | y      | number | 触摸 Y 坐标             |
 
-**Mini 拨码开关事件 Payload：**
+**XL / Mini 拨码开关事件 Payload：**
 
 | 参数名    | 类型   | 说明                                     |
 | --------- | ------ | ---------------------------------------- |

@@ -344,7 +344,7 @@ async function testComprehensive() {
 
     // Start input event listener
     console.log('\n--- Starting input event listener ---');
-    console.log('Press keys, rotate knobs, swipe, touch N4Pro touch bar, or toggle Mini DIP switches to see events...');
+    console.log('Press keys, rotate knobs, swipe, touch N4Pro touch bar, or toggle XL/Mini DIP switches to see events...');
     console.log('Press Ctrl+C to stop\n');
 
     sendCommand(ws, 'read', devicePath, {});
@@ -371,7 +371,7 @@ async function testComprehensive() {
           console.log(`Knob ${payload.knobId} ${payload.state}`);
         }
 
-        // Mini DIP switch events
+        // XL/Mini DIP switch events
         if (payload.type === 'dip_switch') {
           const direction = payload.direction ? ` ${payload.direction}` : '';
           console.log(`DIP switch ${payload.dipId}${direction} ${payload.state} (${payload.rawState})`);
