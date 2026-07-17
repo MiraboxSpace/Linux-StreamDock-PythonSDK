@@ -288,12 +288,18 @@ if __name__ == "__main__":
    | N4Pro | `reset_usb_report` | Enable USB report reset behavior |
    | N4Pro | `enable_boot_video` | Enable boot video |
    | XL | `led_follow_key_light` | Link RGB LED state with key light state |
-7. **Listen for key events**
+7. **Listen for input events**
 
    ```python
-   def key_callback(device, key, state):
-       # state=1 means pressed, state=0 means released
-       pass
+   from StreamDock.InputTypes import EventType
+
+   def key_callback(device, event):
+       if event.event_type == EventType.BUTTON:
+           print(f"Key {event.key.value}: {event.state}")
+       elif event.event_type == EventType.DIP_SWITCH:
+           # XL and Mini expose two three-position DIP switches.
+           direction = event.direction.value if event.direction else "center"
+           print(f"DIP {event.dip_id.value}: {direction}, state={event.state}")
 
    device.set_key_callback(key_callback)
    ```

@@ -365,10 +365,15 @@ device->gifer()->startGifLoop();                             // Start gif sendin
 
 ```cpp
 device->reader()->startReadLoop();  // Before or after calling the register key read function, you must start the read loop, otherwise no messages will be processed
-// The first parameter here is the actual value of the registered key. To find this value, you need to go to `HotspotDevice/StreamDockXXX.cpp` to find the `key` value in `_readValueMap`
 device->reader()->registerReadCallback(11, []()
 		{ ToolKit::print("Key 11 pressed"); }, RegisterEvent::EveryThing);
 ```
+
+XL and Mini DIP switches support the following callback event APIs:
+
+- `RegisterEvent::DIPLeft` / `RegisterEvent::DIPLeftEnd`
+- `RegisterEvent::DIPRight` / `RegisterEvent::DIPRightEnd`
+- `RegisterEvent::DIPPress` / `RegisterEvent::DIPRelease`
 
 ### 5.5 Main Function Entry: Device Enumeration and Calling Test Functions
 

@@ -20,6 +20,10 @@ class FeatrueOption:
     def __init__(self):
         self.hasRGBLed = False
         self.ledCounts = 0
+        self.hasKnob = False
+        self.knobCounts = 0
+        self.hasDIPSwitch = False
+        self.dipSwitchCounts = 0
         self.supportConfig = False
         self.supportKeyGif = True
         self.supportBackgroundGif = False

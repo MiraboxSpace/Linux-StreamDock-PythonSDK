@@ -57,6 +57,8 @@ StreamDockMini::StreamDockMini(const hid_device_info& device_info)
 	_feature->hasRGBLed = true;
 	_feature->supportConfig = false;
 	_feature->ledCounts = 12;
+	_feature->hasDIPSwitch = true;
+	_feature->dipSwitchCounts = 2;
 	// clang-format off
 	_readValueMap = {
 		/// Normal keys, starting from the top-left corner, counted left to right and top to bottom, correspond to keys 1 to 6

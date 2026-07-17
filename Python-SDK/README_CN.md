@@ -287,12 +287,18 @@ if __name__ == "__main__":
    | N4Pro | `reset_usb_report` | 启用 USB report 重置行为 |
    | N4Pro | `enable_boot_video` | 启用开机视频 |
    | XL | `led_follow_key_light` | RGB LED 状态跟随按键灯状态 |
-7. **监听按键事件**
+7. **监听输入事件**
 
    ```python
-   def key_callback(device, key, state):
-       # state=1 表示按下，state=0 表示释放
-       pass
+   from StreamDock.InputTypes import EventType
+
+   def key_callback(device, event):
+       if event.event_type == EventType.BUTTON:
+           print(f"按键 {event.key.value}: {event.state}")
+       elif event.event_type == EventType.DIP_SWITCH:
+           # XL 和 Mini 均提供两个三档拨码开关。
+           direction = event.direction.value if event.direction else "center"
+           print(f"拨码 {event.dip_id.value}: {direction}, state={event.state}")
 
    device.set_key_callback(key_callback)
    ```

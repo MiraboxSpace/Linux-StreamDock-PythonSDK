@@ -13,6 +13,7 @@ class StreamDockMini(StreamDock):
     """StreamDockMini device class - supports 6 keys and 2 DIP switches"""
 
     KEY_COUNT = 6
+    DIP_SWITCH_COUNT = 2
     KEY_MAP = False
 
     # Image key mapping: logical key -> hardware key (for setting images)
@@ -217,5 +218,7 @@ class StreamDockMini(StreamDock):
         self.transport.set_report_size(513, 1025, 0)
         self.feature_option.hasRGBLed = True
         self.feature_option.ledCounts = 12
+        self.feature_option.hasDIPSwitch = True
+        self.feature_option.dipSwitchCounts = self.DIP_SWITCH_COUNT
         self.feature_option.deviceType = device_type.dock_mini
         pass
