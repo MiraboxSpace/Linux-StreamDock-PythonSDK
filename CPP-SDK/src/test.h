@@ -513,56 +513,29 @@ namespace TEST_XL
 {
 	void test(std::shared_ptr<StreamDock> device)
 	{
-		if (device->info()->originType != DeviceOriginType::SDXL || !device->feature()->supportBackGroundGif)
+		if (device->info()->originType != DeviceOriginType::SDXL)
 			return;
 		device->heartbeater()->startHeartBeatLoop();
-		auto configs = buildConfigCommand<XLConfigEnumerate>({
-			{XLConfigEnumerate::LedFollowKeyLight, ConfigState::On},
-		});
-		device->configer()->setDeviceConfig(configs);
-		device->setKeyBrightness(100);
-		device->rgber()->setLedColor(0, 255, 0);
-		device->rgber()->setLedBrightness(255);
-		// device->rgber()->resetLedColor();
-		device->reader()->startReadLoop();
 		device->wakeupScreen();
+		device->setKeyBrightness(100);
+		device->reader()->startReadLoop();
 		device->clearAllKeys();
 		device->setEncoder(std::make_shared<OpenCVImageEncoder>());
-		device->setBackgroundImgFile("../../img/button_test.jpg");
-		device->refresh();
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-		device->clearAllKeys();
-		// device->setKeyImgFile("../../img/button_test.jpg", 2);
-		// device->gifer()->setKeyGifFile("../../img/test.gif", 1);
-		// device->gifer()->setKeyGifFile("../../img/test.gif", 2);
-		//  device->gifer()->setKeyGifFile("../../img/test.gif", 2);
-		//  device->gifer()->setKeyGifFile("../../img/test.gif", 3);
-		//  device->gifer()->setKeyGifFile("../../img/test.gif", 4);
-		//  device->gifer()->setKeyGifFile("../../img/test.gif", 10);
-		//  device->gifer()->setKeyGifFile("../../img/test.gif", 11);
+		// device->setBackgroundImgFile("../../img/backgroud_test2.png");
+		// std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 		for (int i = 1; i <= 32; i++)
-			device->gifer()->setKeyGifFile("../../img/test.gif", i);
-		// device->gifer()->setKeyGifFile("../../img/test.gif", 15);
-		// device->gifer()->setKeyGifFile("../../img/test.gif", 6);
-		// device->gifer()->setKeyGifFile("../../img/test.gif", 3);
-		// device->gifer()->setKeyGifFile("../../img/test.gif", 13);
 		{
-			/// crop by point(x, y) and size(width, height)
-			// device->getBackgroundGifHelper()->_crop_offset_x = 100;
-			// device->getBackgroundGifHelper()->_crop_offset_y = 100;
-			// device->getBackgroundGifHelper()->_width = 300;
-			// device->getBackgroundGifHelper()->_height = 100;
-			// device->getBackgroundGifHelper()->_processer = ImgProcess::Crop;
-			// device->getBackgroundGifHelper()->_crop_offset_y = 100;
-			// device->gifer()->clearBackgroundGifStream();
-			// device->gifer()->clearBackgroundGifStream(static_cast<uint8_t>(N4ProBackgroundGifPostion::TouchScreen));
-			// device->gifer()->setBackgroundGifFile("../../img/test.gif", 500, 100);
-			/// all screen
-			// device->gifer()->setBackgroundGifFile("../../img/test.gif");
+			if (0 == i % 3)
+				device->gifer()->setKeyGifFile("../../img/test.gif", i);
+			else if (1 == i % 3)
+				device->setKeyImgFile("../../img/button_test.jpg", i);
+			else if (2 == i % 3)
+				device->setKeyImgFile("../../img/mark.png", i);
 		}
-
-		// device->setKeyImgFile("../../img/button_test.jpg", 9);
 		device->gifer()->startGifLoop();
+		device->refresh();
+		device->rgber()->setLedColor(0, 0, 255);
+
 		for (int i = 1; i <= 32; i++)
 		{
 			int keyIndex = i;
@@ -571,18 +544,31 @@ namespace TEST_XL
 			device->reader()->registerReadCallback(keyIndex, [keyIndex]()
 												   { debugPrint("Key " + std::to_string(keyIndex) + " release"); }, RegisterEvent::KeyRelease);
 		}
-		// device->reader()->registerReadCallback(11, []()
-		// 									   { debugPrint("Key 11 pressed"); }, RegisterEvent::KeyPress);
-		// device->reader()->registerReadCallback(11, []()
-		// 									   { debugPrint("Key 11 release"); }, RegisterEvent::KeyRelease);
+
 		device->reader()->registerReadCallback(33, []()
-											   { debugPrint("left toggle up"); }, RegisterEvent::ToggleUp);
-		device->reader()->registerReadCallback(35, []()
-											   { debugPrint("right toggle up"); }, RegisterEvent::ToggleUp);
+											   { debugPrint("dip 1 left"); }, RegisterEvent::DIPLeft);
+		device->reader()->registerReadCallback(33, []()
+											   { debugPrint("dip 1 left end"); }, RegisterEvent::DIPLeftEnd);
 		device->reader()->registerReadCallback(34, []()
-											   { debugPrint("left toggle down"); }, RegisterEvent::ToggleDown);
+											   { debugPrint("dip 1 right"); }, RegisterEvent::DIPRight);
+		device->reader()->registerReadCallback(34, []()
+											   { debugPrint("dip 1 right end"); }, RegisterEvent::DIPRightEnd);
+		device->reader()->registerReadCallback(37, []()
+											   { debugPrint("dip 1 pressed"); }, RegisterEvent::DIPPress);
+		device->reader()->registerReadCallback(37, []()
+											   { debugPrint("dip 1 release"); }, RegisterEvent::DIPRelease);
+		device->reader()->registerReadCallback(35, []()
+											   { debugPrint("dip 2 left"); }, RegisterEvent::DIPLeft);
+		device->reader()->registerReadCallback(35, []()
+											   { debugPrint("dip 2 left end"); }, RegisterEvent::DIPLeftEnd);
 		device->reader()->registerReadCallback(36, []()
-											   { debugPrint("right toggle down"); }, RegisterEvent::ToggleDown);
+											   { debugPrint("dip 2 right"); }, RegisterEvent::DIPRight);
+		device->reader()->registerReadCallback(36, []()
+											   { debugPrint("dip 2 right end"); }, RegisterEvent::DIPRightEnd);
+		device->reader()->registerReadCallback(38, []()
+											   { debugPrint("dip 2 pressed"); }, RegisterEvent::DIPPress);
+		device->reader()->registerReadCallback(38, []()
+											   { debugPrint("dip 2 release"); }, RegisterEvent::DIPRelease);
 	}
 }
 

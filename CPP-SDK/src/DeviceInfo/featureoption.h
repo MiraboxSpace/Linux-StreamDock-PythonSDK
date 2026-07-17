@@ -15,6 +15,7 @@ struct FeatureOption
 	bool isDualDevice = false;
 	bool hasSecondScreen = false;
 	bool hasRGBLed = false;
+	bool hasDIPSwitch = false;
 	bool supportBackGroundGif = false;
 	bool supportTransparentIcon = false;
 	bool supportKeyJpegPngStream = false;
@@ -26,4 +27,5 @@ struct FeatureOption
 	ImgType _2rdScreenEncodeType = ImgType::JPG;
 	ImgType backgroundGifEncodeType = ImgType::JPG;
 	uint16_t ledCounts = 0;
+	uint16_t dipSwitchCounts = 0;
 };

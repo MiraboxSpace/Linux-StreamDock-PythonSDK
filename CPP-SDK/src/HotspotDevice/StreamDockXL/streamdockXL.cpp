@@ -60,6 +60,8 @@ StreamDockXL::StreamDockXL(const hid_device_info &device_info)
   _feature->supportConfig = true;
   _feature->hasRGBLed = true;
   _feature->ledCounts = 6;
+  _feature->hasDIPSwitch = true;
+  _feature->dipSwitchCounts = 2;
   // clang-format off
     _readValueMap = {
         // Normal keys, starting from the bottom-left corner, counted left to right and bottom to top, correspond to keys 1 to 32
@@ -67,8 +69,10 @@ StreamDockXL::StreamDockXL(const hid_device_info &device_info)
         {9,0x11}, {10,0x12}, {11,0x13}, {12,0x14}, {13,0x15}, {14,0x16}, {15,0x17}, {16,0x18},
         {17,0x09}, {18,0x0A}, {19,0x0B}, {20,0x0C}, {21,0x0D}, {22,0x0E}, {23,0x0F}, {24,0x10},
         {25,0x01}, {26,0x02}, {27,0x03}, {28,0x04}, {29,0x05}, {30,0x06}, {31,0x07}, {32,0x08},
-        /// XL Toggle switch group (from left to right): 33, 35 push up; 34, 36 represent push down
-		    {33, 0x21},{34, 0x23},{35,0x24},{36,0x26 },
+        /// XL DIP switch 1 (left physical switch): 33 left, 34 right, 37 center press
+        {33, 0x21}, {34, 0x23}, {37, 0x22},
+        /// XL DIP switch 2 (right physical switch): 35 left, 36 right, 38 center press
+        {35, 0x24}, {36, 0x26}, {38, 0x25},
     };
   // clang-format on
 }
@@ -80,9 +84,11 @@ RegisterEvent StreamDockXL::dispatchEvent(uint8_t readValue,
     return RegisterEvent::KeyRelease; /// Normal key release event
   else if ((0x01 <= readValue && readValue <= 0x20) && eventValue == 0x01)
     return RegisterEvent::KeyPress; /// Normal key press event
-  else if ((0x21 == readValue || 0x24 == readValue) && eventValue == 0x00)
-    return RegisterEvent::ToggleUp;
-  else if ((0x23 == readValue || 0x26 == readValue) && eventValue == 0x00)
-    return RegisterEvent::ToggleDown;
+  else if (readValue == 0x21 || readValue == 0x24)
+    return eventValue == 0x01 ? RegisterEvent::DIPLeft : RegisterEvent::DIPLeftEnd;
+  else if (readValue == 0x23 || readValue == 0x26)
+    return eventValue == 0x01 ? RegisterEvent::DIPRight : RegisterEvent::DIPRightEnd;
+  else if (readValue == 0x22 || readValue == 0x25)
+    return eventValue == 0x01 ? RegisterEvent::DIPPress : RegisterEvent::DIPRelease;
   return RegisterEvent::EveryThing;
 }

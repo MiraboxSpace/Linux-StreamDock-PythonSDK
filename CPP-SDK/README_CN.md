@@ -361,10 +361,15 @@ device->gifer()->startGifLoop();                             // 启动 gif 发�
 
 ```cpp
 device->reader()->startReadLoop();  // 调用注册按键读函数前或后, 必须开启读循环, 否则不会处理任何消息
-// 此处第一个参数为注册的按键实际值, 需要查找这个值的你需要去`HotspotDevice/StreamDockXXX.cpp`里面查找`_readValueMap`中的`key`值
 device->reader()->registerReadCallback(11, []()
 		{ ToolKit::print("Key 11 pressed"); }, RegisterEvent::EveryThing);
 ```
+
+XL 和 Mini 的拨码开关支持以下回调事件 API：
+
+- `RegisterEvent::DIPLeft` / `RegisterEvent::DIPLeftEnd`
+- `RegisterEvent::DIPRight` / `RegisterEvent::DIPRightEnd`
+- `RegisterEvent::DIPPress` / `RegisterEvent::DIPRelease`
 
 ### 6.5 主函数入口：设备枚举与调用测试函数
 
