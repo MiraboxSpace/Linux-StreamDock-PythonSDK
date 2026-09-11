@@ -45,8 +45,8 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/Transport/TransportDLL/transport_
         # Check macOS architecture
         if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64|aarch64")
             # ARM macOS
-            if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/Transport/TransportDLL/libtransport_arm64.dylib")
-                message(FATAL_ERROR "Prebuilt transport library not found: ${CMAKE_CURRENT_SOURCE_DIR}/src/Transport/TransportDLL/libtransport_arm64.dylib")
+            if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/Transport/TransportDLL/libtransport.dylib")
+                message(FATAL_ERROR "Prebuilt transport library not found: ${CMAKE_CURRENT_SOURCE_DIR}/src/Transport/TransportDLL/libtransport.dylib")
             endif()
         else()
             # Intel macOS
