@@ -74,7 +74,7 @@ def _get_dll_name() -> str:
     """
     search_library_names = {
         "Windows": {"x86_64": "transport.dll"},
-        "Darwin": {"x86_64": "libtransport.dylib", "arm64": "libtransport_arm64.dylib"},
+        "Darwin": {"x86_64": "libtransport.dylib", "arm64": "libtransport.dylib"},
     }
 
     platform_name = platform.system()
